@@ -21,7 +21,7 @@ const ContactForm: FC = memo(() => {
   const [data] = useState<FormData>(defaultData);
 
 
-  const form = useRef();
+  const form =useRef(null);
   const handleSendMessage = useCallback(
     async (e) => {
       e.preventDefault();
@@ -42,7 +42,7 @@ const ContactForm: FC = memo(() => {
   return (
    
 
-    <form className="grid min-h-[320px] grid-cols-1 gap-y-4" method="POST" ref={form} onSubmit={handleSendMessage}>
+    <form className="grid min-h-[320px] grid-cols-1 gap-y-4"  ref={form} onSubmit={handleSendMessage}>
       <input className={inputClasses} type="text" name="user_name" placeholder='name' />
       <input
         autoComplete="email"
