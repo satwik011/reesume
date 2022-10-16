@@ -1,24 +1,13 @@
-import {FC, useRef ,memo, useCallback, useMemo, useState} from 'react';
+import {FC, useRef ,memo, useCallback, } from 'react';
 
 import emailjs from '@emailjs/browser';
 
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
+
 
 const ContactForm: FC = memo(() => {
-  const defaultData = useMemo(
-    () => ({
-      name: '',
-      email: '',
-      message: '',
-    }),
-    [],
-  );
 
-  const [data] = useState<FormData>(defaultData);
+
+  // const [data] = useState<FormData>(defaultData);
 
 
   const form =useRef(null);
@@ -33,7 +22,7 @@ const ContactForm: FC = memo(() => {
     });
      
     },
-    [data],
+    [],
   );
 
   const inputClasses =
