@@ -1,4 +1,6 @@
-import {FC, memo, useCallback, useMemo, useState} from 'react';
+import {FC, useRef ,memo, useCallback, useMemo, useState} from 'react';
+
+import emailjs from '@emailjs/browser';
 
 interface FormData {
   name: string;
@@ -16,26 +18,20 @@ const ContactForm: FC = memo(() => {
     [],
   );
 
-  const [data, setData] = useState<FormData>(defaultData);
+  const [data] = useState<FormData>(defaultData);
 
-  const onChange = useCallback(
-    <T extends HTMLInputElement | HTMLTextAreaElement>(event: React.ChangeEvent<T>): void => {
-      const {name, value} = event.target;
 
-      const fieldData: Partial<FormData> = {[name]: value};
-
-      setData({...data, ...fieldData});
-    },
-    [data],
-  );
-
+  const form = useRef();
   const handleSendMessage = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      /**
-       * This is a good starting point to wire up your form submission logic
-       * */
-      console.log('Data to send: ', data);
+    async (e) => {
+      e.preventDefault();
+     
+      emailjs.sendForm('service_sk6c0pd', 'template_m78ub7o', form.current!, '18t1gx4IW1abdM9H4') .then((result) => {
+        console.log(result.text);
+    }, (error) => {
+        console.log(error.text);
+    });
+     
     },
     [data],
   );
@@ -44,22 +40,21 @@ const ContactForm: FC = memo(() => {
     'bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200 text-sm';
 
   return (
-    <form className="grid min-h-[320px] grid-cols-1 gap-y-4" method="POST" onSubmit={handleSendMessage}>
-      <input className={inputClasses} name="name" onChange={onChange} placeholder="Name" required type="text" />
+   
+
+    <form className="grid min-h-[320px] grid-cols-1 gap-y-4" method="POST" ref={form} onSubmit={handleSendMessage}>
+      <input className={inputClasses} type="text" name="user_name" placeholder='name' />
       <input
         autoComplete="email"
         className={inputClasses}
-        name="email"
-        onChange={onChange}
-        placeholder="Email"
-        required
-        type="email"
+        type="email" name="user_email" 
+        placeholder='Email'
       />
       <textarea
         className={inputClasses}
         maxLength={250}
+       
         name="message"
-        onChange={onChange}
         placeholder="Message"
         required
         rows={6}
@@ -67,7 +62,7 @@ const ContactForm: FC = memo(() => {
       <button
         aria-label="Submit contact form"
         className="w-max rounded-full border-2 border-orange-600 bg-stone-900 px-4 py-2 text-sm font-medium text-white shadow-md outline-none hover:bg-stone-800 focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:ring-offset-stone-800"
-        type="submit">
+        type="submit" value="Send">
         Send Message
       </button>
     </form>
