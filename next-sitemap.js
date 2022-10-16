@@ -10,6 +10,10 @@ module.exports = {
       lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
     };
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   generateRobotsTxt: true,
   robotsTxtOptions: {
     policies: [
